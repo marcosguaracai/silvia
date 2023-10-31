@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário Silvia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="calendario-container" class="calendario-lado">
+    <header class="calendar-header">
+        <button id="btnRetroceder" aria-label="Mês anterior">← Mês Anterior</button>
+        <span id="nome-do-mes"></span>
+        <button id="btnAvancar" aria-label="Próximo mês">Próximo Mês →</button>
+    </header>
+    <table id="calendario">
+        <!-- As células do calendário serão injetadas aqui pelo JavaScript -->
+    </table>
+</div>
+
+<div id="info-container" class="informacoes-lado">
+    <div id="info">Clique em uma data para ver informações</div>
+    <ul id="listaTarefas">
+        <!-- As tarefas serão injetadas aqui pelo JavaScript -->
+    </ul>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
