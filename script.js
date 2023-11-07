@@ -10,6 +10,21 @@ const nomesDosMeses = [
   "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
+const feriadosAnuais = {
+  '0': ['1'], // Janeiro: Ano Novo
+  '1': ['13'], // Carnaval Fevereiro: 
+  '2': [], // Março: (sem feriados fixos)
+  '3': ['6', '21', '26', '30'], // Abril: Tiradentes
+  '4': ['1'], // Maio: Dia do Trabalhador
+  '5': [], // Junho: (sem feriados fixos)
+  '6': ['9'], // Julho: Revolução Constitucionalista (feriado estadual em SP)
+  '7': [], // Agosto: (sem feriados fixos)
+  '8': ['7'], // Setembro: Independência do Brasil
+  '9': ['12'], // Outubro: Nossa Senhora Aparecida
+  '10': ['2', '15'], // Novembro: Finados e Proclamação da República
+  '11': ['25'], // Dezembro: Natal
+};
+
 function formatarChaveData(ano, mes, dia) {
   return `${ano}-${mes + 1}-${dia}`;
 }
@@ -89,25 +104,24 @@ function mostrarEventos(dia) {
     listaTarefas.innerHTML = '<li>Nenhum evento para esta data.</li>';
   }
 }
-
+function adicionarFeriadosComoEventos() {
+  for (const mes in feriadosAnuais) {
+    feriadosAnuais[mes].forEach(dia => {
+      const chaveData = formatarChaveData(anoAtual, parseInt(mes), parseInt(dia));
+      if (!eventos[chaveData]) {
+        eventos[chaveData] = ['Feriado'];
+      }
+    });
+  }
+  salvarEventos(); // Salva os feriados no localStorage após adicioná-los
+}
 function montarCalendario() {
   let calendario = document.getElementById('calendario');
   calendario.innerHTML = '';
-
   let nomeDoMes = document.getElementById('nome-do-mes');
   nomeDoMes.textContent = `${nomesDosMeses[mesAtual]} ${anoAtual}`;
-
   let primeiroDiaDoMes = new Date(anoAtual, mesAtual, 1).getDay();
   let numeroDeDiasNoMes = new Date(anoAtual, mesAtual + 1, 0).getDate();
-
-  let cabecalho = calendario.createTHead();
-  cabecalho.innerHTML = '';
-  let linhaCabecalho = cabecalho.insertRow();
-  let diasDaSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  diasDaSemana.forEach(dia => {
-    let celulaCabecalho = linhaCabecalho.insertCell();
-    celulaCabecalho.innerText = dia;
-  });
 
   let linha = calendario.insertRow();
   for (let i = 0; i < primeiroDiaDoMes; i++) {
@@ -121,13 +135,18 @@ function montarCalendario() {
     let celulaDia = linha.insertCell();
     celulaDia.innerText = dia;
     let chaveData = formatarChaveData(anoAtual, mesAtual, dia);
+
     if (eventos[chaveData]) {
       celulaDia.classList.add('comEvento');
     }
     if (dia === diaAtual && mesAtual === hoje.getMonth() && anoAtual === hoje.getFullYear()) {
       celulaDia.classList.add('hoje');
     }
-    celulaDia.onclick = () => selecionarDia(dia);
+    if (feriadosAnuais[String(mesAtual)] && feriadosAnuais[String(mesAtual)].includes(String(dia))) {
+      celulaDia.classList.add('feriado');
+    }
+    celulaDia.addEventListener('mouseover', () => mostrarEventos(dia));
+    celulaDia.addEventListener('click', () => selecionarDia(dia));
   }
 }
 
@@ -152,6 +171,8 @@ function configurarNavegacao() {
 }
 
 // Inicialização
-carregarEventos();
-montarCalendario();
-configurarNavegacao();
+window.addEventListener('load', function() {
+  carregarEventos();
+  montarCalendario();
+  configurarNavegacao();
+});

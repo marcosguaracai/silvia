@@ -23,9 +23,7 @@ body {
 
 #calendario-container,
 #info-container {
-    
     border-radius: 8px;
-   
     width: 352px; /* Largura fixa para ambos os contêineres */
     margin-bottom: 50px; /* Espaçamento entre os contêineres */
 }
@@ -77,9 +75,17 @@ button:hover {
 }
 
 #calendario td.hoje {
-    background-color: #ff6347;
+    background-color: #1e90ff;
     color: white;
     font-weight: bold;
+}
+
+#calendario td.feriado {
+    background-color: #ff6347; /* Cor de destaque para os feriados */
+}
+
+#calendario td.feriado:hover {
+    background-color: #ffcccc; /* Mantém a cor de fundo dos feriados ao passar o mouse */
 }
 
 #info {
@@ -88,6 +94,7 @@ button:hover {
     text-align: center;
     line-height: 2.6;
 }
+
 #listaTarefas {
     list-style: none; /* Remove marcadores de lista */
     padding: 18px;
@@ -99,6 +106,7 @@ button:hover {
     padding: 10px;
     cursor: pointer;
 }
+
 #listaTarefas li button {
     margin-left: 10px;
     padding: 5px 10px;
@@ -137,4 +145,6 @@ button:hover {
         width: 100%;
         margin-bottom: 5px;
     }
+    /* As regras para .feriado estão acima e aplicam-se a todas as resoluções de tela */
 }
+
